@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="gamefunction.js"> </script>
+        <link rel="stylesheet" type="text/css" href=gamestyle.css>
+        <title>RPGame</title>
+    </head>
+    
+    <body onload="Starter()">
+        <table id="statsborder">
+            <tr>
+                <td>Level:</td>
+                <td id="changelevel">1</td>
+            </tr>
+            <tr>
+                <td>Exp:</td>
+                <td id="changeexp">0 /</td>
+            </tr>
+            <tr>
+                <td>Hp:</td>
+                <td id="changehp">10</td>
+            </tr>
+            <tr>
+                <td>Atk:</td>
+                <td id="changeatk">1</td>
+            </tr>
+            <tr>
+                <td>Def:</td>
+                <td id="changedef">1</td>
+            </tr>
+            <tr>
+                <td>Spd:</td>
+                <td id="changespd">5</td>
+            </tr>
+        </table>
+
+        <table id="armorborder">
+            <tr>
+                <td> Helm:</td>
+                <td id="namehelm"></td>
+                <td id="werthelm">0</td>
+            </tr>
+            <tr>
+                <td>Rüstung:</td>
+                <td id="namearmor"></td>
+                <td id="wertarmor">0</td>
+            </tr>
+            <tr>
+                <td>Schuhe:</td>
+                <td id="nameschuhe"></td>
+                <td id="wertschuhe">0</td>
+            </tr>
+            <tr>
+                <td>Waffe:</td>
+                <td id="namewaffe"></td>
+                <td id="wertwaffe">0</td>
+            </tr>
+            <tr>
+                <td>Schild:</td>
+                <td id="nameschild"></td>
+                <td id="wertschild">0</td>
+            </tr>
+            <tr>
+                <td>Gold:</td>
+                <td id="wertgold">0</td>
+            </tr>
+        </table>
+        <br>
+        <a id="levelupper"onclick="expplus()"> Free Exp! </a>
+        <br>
+        <br>
+    <div id="buttonhandler">
+        <a id="startbutton" onclick="startegame()"> Let´s Go! </a>
+        <div id="buttonhandler">
+            <div id="buttonhandler1" class="cards"></div>
+            <div id="buttonhandler2"  class="cards"></div>
+            <div id="buttonhandler3" class="cards"></div>
+        </div>
+    </div>
+<button onclick="monsterspawn()">Monster</button>
+<button onclick="tester()">Tester</button>
+<button onclick="neustart()">Restart</button>
+    </body>
+
+</html>
