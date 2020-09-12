@@ -9,6 +9,8 @@ maindef = 10;
 mainspd = 50;
 maingold = 0;
 mainmaxlevel = 20;
+chestkey = 0;
+
 
 // Hier sind alle ober Decks gelistet
 alldecks = [];
@@ -72,6 +74,10 @@ function Update(){
     document.getElementById("namewaffe").innerHTML = "[" + slot5[0] + "] :";
 
     levelup();
+
+    if(mainhp <= 0){
+        Gameover();
+    }
 
 }
 /*###########################################################
@@ -397,6 +403,11 @@ function startegame(){
     gamestartet = true;
     startbutton = document.getElementById("startbutton");
     startbutton.parentNode.removeChild(startbutton);
+
+    document.getElementById("statsborder").style.display = "inline-block";
+    document.getElementById("armorborder").style.display = "inline-block";
+    document.getElementById("maintext").style.display = "inline-block";
+
     buttonhandler1 = document.getElementById("buttonhandler1");
     buttonhandler2 = document.getElementById("buttonhandler2"); 
     buttonhandler3 = document.getElementById("buttonhandler3");
@@ -405,70 +416,9 @@ function startegame(){
     cardseffekt[0].style.display = "inline-block";
     cardseffekt[1].style.display = "inline-block";
     cardseffekt[2].style.display = "inline-block";
-    
-    object1 = document.createElement("div");
-    object2 = document.createElement("div");
-    object3 = document.createElement("div");
 
-    wertobject1 = document.createElement("div");
-    wertobject2 = document.createElement("div");
-    wertobject3 = document.createElement("div");
-
-    typobject1 = document.createElement("div");
-    typobject2 = document.createElement("div");
-    typobject3 = document.createElement("div");
-
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item1 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
-
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item2 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
-
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item3 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
-
-    itemlist.push(item1, item2, item3);
-
-    object1.innerHTML = item1[0].name;
-    object2.innerHTML = item2[0].name;
-    object3.innerHTML = item3[0].name;
-
-    wertobject1.innerHTML = item1[0].wert;
-    wertobject2.innerHTML = item2[0].wert;
-    wertobject3.innerHTML = item3[0].wert;
-
-    typobject1.innerHTML = item1[0].typ;
-    typobject2.innerHTML = item2[0].typ;
-    typobject3.innerHTML = item3[0].typ;
-
-    object1.classList.add("kartenoptik");
-    object2.classList.add("kartenoptik");
-    object3.classList.add("kartenoptik");
-
-    buttonhandler1.addEventListener("click", itemchanger);
-    buttonhandler2.addEventListener("click", itemchanger);
-    buttonhandler3.addEventListener("click", itemchanger);
-
-    buttonhandler1.appendChild(object1);
-    buttonhandler2.appendChild(object2);
-    buttonhandler3.appendChild(object3);
-
-    buttonhandler1.appendChild(wertobject1);
-    buttonhandler2.appendChild(wertobject2);
-    buttonhandler3.appendChild(wertobject3);
-
-    buttonhandler1.appendChild(typobject1);
-    buttonhandler2.appendChild(typobject2);
-    buttonhandler3.appendChild(typobject3);
+    tester();
+    storyline();
 }
 
 /*###########################################################
@@ -498,46 +448,73 @@ function cardsdropper(){
 
 /*###########################################################
 #############################################################
-            Ändert die Items auf dem Feld (WIRD SPÄTER ENTFERNT!)
+            Ändert die Items auf dem Feld
 #############################################################
 #############################################################*/
 
 function tester(){
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item1 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
+    if(gamestartet){
+        randomitem = Math.floor((Math.random()*itemlist.length)+0);
+        itemclass1 = itemlist[randomitem];
+        itemlist[randomitem] = "z";
+        itemlist.sort();
+        itemlist.pop(1);
+    
+        randomitem = Math.floor((Math.random()*itemlist.length)+0);
+        itemclass2 = itemlist[randomitem];
+        itemlist[randomitem] = "z";
+        itemlist.sort();
+        itemlist.pop(1);
+    
+        randomitem = Math.floor((Math.random()*itemlist.length)+0);
+        itemclass3 = itemlist[randomitem];
+        itemlist[randomitem] = "z";
+        itemlist.sort();
+        itemlist.pop(1);
 
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item2 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
+        itemlist.push(itemclass1, itemclass2, itemclass3);
 
-    randomitem = Math.floor((Math.random()*itemlist.length)+0);
-    item3 = itemlist[randomitem];
-    itemlist[randomitem] = "z";
-    itemlist.sort();
-    itemlist.pop(1);
+        randomitem1 = Math.floor((Math.random()*itemclass1.length)+0);
+        randomitem2 = Math.floor((Math.random()*itemclass2.length)+0);
+        randomitem3 = Math.floor((Math.random()*itemclass3.length)+0);
 
-    itemlist.push(item1, item2, item3);
+        item1 = itemclass1[randomitem1];
+        item2 = itemclass2[randomitem2];
+        item3 = itemclass3[randomitem3];
+    
+        buttonhandler1.innerHTML = "";
+        buttonhandler2.innerHTML = "";
+        buttonhandler3.innerHTML = "";
 
-    randomitem1 = Math.floor((Math.random()*item1.length)+0);
-    randomitem2 = Math.floor((Math.random()*item2.length)+0);
-    randomitem3 = Math.floor((Math.random()*item3.length)+0);
-
-    object1.innerHTML = item1[randomitem1].name;
-    object2.innerHTML = item2[randomitem2].name;
-    object3.innerHTML = item3[randomitem3].name;
-
-    wertobject1.innerHTML = item1[randomitem1].wert;
-    wertobject2.innerHTML = item2[randomitem2].wert;
-    wertobject3.innerHTML = item3[randomitem3].wert;
-
-    typobject1.innerHTML = item1[randomitem1].typ;
-    typobject2.innerHTML = item2[randomitem2].typ;
-    typobject3.innerHTML = item3[randomitem3].typ;
+        buttonhandler1.removeEventListener("click", Monsterfight);
+        buttonhandler2.removeEventListener("click", Monsterfight);
+        buttonhandler3.removeEventListener("click", Monsterfight);
+    
+        buttonhandler1.addEventListener("click", itemchanger);
+        buttonhandler2.addEventListener("click", itemchanger);
+        buttonhandler3.addEventListener("click", itemchanger);
+    
+        var itemsize = Object.keys(item1).length;
+        for(var i = 0; i < itemsize; i++){
+            var div = document.createElement("div");
+            div.innerHTML = Object.values(item1)[i];
+            buttonhandler1.appendChild(div);
+        }
+        var itemsize = Object.keys(item2).length;
+        for(var i = 0; i < itemsize; i++){
+            var div = document.createElement("div");
+            div.innerHTML = Object.values(item2)[i];
+            buttonhandler2.appendChild(div);
+        }
+        var itemsize = Object.keys(item3).length;
+        for(var i = 0; i < itemsize; i++){
+            var div = document.createElement("div");
+            div.innerHTML = Object.values(item3)[i];
+            buttonhandler3.appendChild(div);
+        }
+    }else{
+        console.log("Das Spiel hat noch nicht gestartet (Tester)");
+    }
 }
 
 /*###########################################################
@@ -548,7 +525,10 @@ function tester(){
 
 // WICHTIG ES MUSS NOCH ERWEITERT WERDEN DASS ANDERE DECKS ERSCHEINEN NACHDEM ETWAS GEWÄHLT WURDE!
 function itemchanger(){
-    if(this.childNodes[2].innerHTML == "slot1"){
+    if(typeof this.childNodes[2] == "undefined"){
+        console.log("Hierbei handelt es sich um kein Item");
+    }
+    else if(this.childNodes[2].innerHTML == "slot1"){
         slot1[1] = this.childNodes[1].innerHTML; //Helmwert
         slot1[0] = this.childNodes[0].innerHTML;
     }   else if(this.childNodes[2].innerHTML == "slot2"){
@@ -595,9 +575,18 @@ function neustart(){
     maindef = 10;
     mainspd = 50;
     maingold = 0;
+    chestkey = 0;
+
+    tablekey = false;
+    firsttext = false;
 
     buttonhandler = document.getElementById("buttonhandler");
     buttonhandler.appendChild(startbutton);
+
+    document.getElementById("statsborder").style.display = "none";
+    document.getElementById("armorborder").style.display = "none";
+    document.getElementById("maintext").style.display = "none";
+
 
     cardseffekt[0].style.display = "none";
     cardseffekt[1].style.display = "none";
@@ -764,4 +753,117 @@ function expplus(){
     console.table(alldecks);
     console.table(itemlist);
     console.log(monsterdecks);
+}
+
+firsttext = false;
+tablekey = false;
+firstpart = false;
+
+function storyline(){
+    maintext = document.getElementById("maintext");
+    buttonhandler1.style.display = "inline-block";
+    buttonhandler2.style.display = "inline-block";
+    buttonhandler3.style.display = "inline-block";
+
+    if(gamestartet && firstpart === false){
+        if(!firsttext){
+        maintext.innerHTML = "... du bist grade wach geworden und realisierst dass du dich in einem unbekannten Raum befindest, was möchtest du tun?";
+        firsttext = true;
+        }else{
+            maintext.innerHTML = "In dem Raum befindet sich noch immer ein Tisch, die Kiste und eine Tür."
+        }
+        buttonhandler1.innerHTML = "Die einzige Tür im Raum öffnen";
+        buttonhandler2.innerHTML = "Zu der vermoderten Holzkiste laufen";
+        buttonhandler3.innerHTML = "Dich an den alten Holztisch setzen";
+
+        buttonhandler1.onclick = function(){ // Du bist durch die Tür gegangen
+            maintext.innerHTML = "Es kommen merkwürdige Geräusche von draußen";
+            buttonhandler1.innerHTML = "Durch die halboffene Tür nach draußen laufen";
+            buttonhandler1.onclick = function(){ // Du gehst aus dem Haus
+                firstpart = true;
+                maintext.innerHTML = "Das Haus bricht hinter dir zusammen. Es gibt kein zurück mehr!"
+                buttonhandler1.onclick = "";
+                buttonhandler2.onclick = "";
+                buttonhandler3.onclick = "";
+                monsterspawn();
+            };
+            buttonhandler2.innerHTML = "Wieder durch die Tür laufen aus der du gekommen bist";
+            buttonhandler2.onclick = function(){ // Du gehst wieder zurück in den Raum
+                storyline();
+            }
+            buttonhandler3.innerHTML = "Zu dem geschloßenen Fenster gehen";
+            buttonhandler3.onclick = function(){ // Du gehst zu dem Fenster
+                maintext.innerHTML = "Du schaust aus dem Fenster und siehst etwas schreckliches...";
+                buttonhandler1.innerHTML = "Du bist wie eingefroren vor Schreck";
+                buttonhandler1.onclick = "";
+                buttonhandler2.style.display = "none";
+                buttonhandler3.style.display = "none";
+                setTimeout(function(){
+                    maintext.innerHTML = "Das Fenster wurde einfach seit Jahren nicht mehr geputzt!!! <br> Der Schreck war so groß dass du auf der Stelle gestorben bist..."
+                    mainhp = 0;
+                }, 3000);
+            }
+        }
+        buttonhandler2.onclick = function(){ // Du gehst zu der Kiste
+            maintext.innerHTML = "Die Kiste besitzt eine Aussparung für einen Schlüssel :o"
+            buttonhandler1.innerHTML = "Die Kiste öffnen";
+            buttonhandler1.onclick = function(){ // Du möchtest die Kiste öffnen
+                if(Number(slot1[1] > 0 || slot2[1] > 0 || slot3[1] > 0 || slot4[1] > 0 || slot5[1] > 0 || slot6[1]) > 0){
+                    maintext.innerHTML = "Es liegen noch zwei Items in der Truhe, du möchtest sie aber nicht mitnehmen"
+                }
+                else if(chestkey > 0){
+                    maintext.innerHTML = "Du öffnest die Truhe und findest drei Items! Aus irgendwelchen Gründen auch immer kannst du aber nur eins davon mitnehmen."
+                    chestkey--;
+                    buttonhandler3.style.display = "inline-block";
+                    buttonhandler1.onclick = function(){
+                        storyline();
+                    }
+                    buttonhandler2.onclick = function(){
+                        storyline();
+                    }
+                    buttonhandler3.onclick = function(){
+                        storyline();
+                    }
+                    tester();
+                }else{
+                    maintext.innerHTML = "Du hast keinen Schlüssel für die Kiste :("
+                }
+            }
+            buttonhandler2.innerHTML = "Zurück gehen";
+            buttonhandler3.style.display = "none";
+            buttonhandler2.onclick = function(){ // Du gehst wieder weg von der Kiste
+                storyline();
+            }
+        }
+        buttonhandler3.onclick = function(){ // Du gehst zu dem Holztisch
+            if(!tablekey){
+            maintext.innerHTML = "Du siehst auf dem Tisch einen Schlüssel liegen, wofür der wohl ist?"
+            buttonhandler1.innerHTML = "Schlüssel aufheben";
+            buttonhandler1.onclick = function(){
+                maintext.innerHTML = "Du hast einen Schlüssel erhalten! Herzlichen Glückwunsch!"
+                chestkey++;
+                tablekey = true;
+                buttonhandler1.style.display = "none";
+            }
+        }else{
+            maintext.innerHTML = "Du siehst einen dreckigen Tisch, mit einem sauberen Abdruck in Schlüsselform"
+            buttonhandler1.style.display = "none";
+        }
+            buttonhandler2.innerHTML = "Zurück gehen";
+            buttonhandler3.style.display = "none";
+            buttonhandler2.onclick = function(){ // Du gehst wieder zurück
+                storyline();
+            }
+        }
+    }
+
+}
+
+function Gameover(){
+    buttonhandler1.style.display = "none";
+    buttonhandler2.style.display = "none";
+    buttonhandler3.style.display = "none";
+    buttonhandler1.onclick = "";
+    buttonhandler2.onclick = "";
+    buttonhandler3.onclick = "";
 }
