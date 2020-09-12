@@ -16,12 +16,12 @@
 }
 
 #statsborder{
-    display: inline-block;
+    display: none;
     border-style: solid;
     width: 166px;
 }
 #armorborder{
-    display: inline-block;
+    display: none;
     border-style: solid;
 }
 
@@ -32,9 +32,9 @@
     -webkit-user-select: none;
     user-select: none; 
     border-style: solid;
-    padding-top: 15px;
-    width: 150px;
-    height: 50px;
+    padding-top: 55px;
+    width: 550px;
+    height: 100px;
     text-align: center;
     font-size: 30px;
 }
@@ -65,4 +65,12 @@
 .cards:active{
     background: grey;
     color: white;
+}
+#maintext{
+    display: none;
+    border: solid;
+    width: 550px;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
 }
