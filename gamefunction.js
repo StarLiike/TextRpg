@@ -10,6 +10,8 @@ mainspd = 50;
 maingold = 0;
 mainmaxlevel = 20;
 chestkey = 0;
+critrate = 10;
+critdmg = 1.5;
 
 
 // Hier sind alle ober Decks gelistet
@@ -43,6 +45,10 @@ deletedtitle = [];
 activetitel = [];
 
 gamestartet = false;
+fightstart = false;
+
+globalmaxspd = 500;
+
 randomdeck = 0;
 
 
@@ -579,6 +585,7 @@ function neustart(){
 
     tablekey = false;
     firsttext = false;
+    firstpart = false;
 
     buttonhandler = document.getElementById("buttonhandler");
     buttonhandler.appendChild(startbutton);
@@ -627,17 +634,17 @@ class Monster{
         this.mobexp = mobexp;
         this.mobdrop = mobdrop;
     }
-}//                                     HP  De  S  At Ex Drop
-klbear = new Monster("Kleiner Bär",     40, 10, 30, 20, 1, 0);
-bear = new Monster("Bär",               50, 12, 30, 30, 2, 0);
-grbear = new Monster("Großer Bär",      50, 15, 30, 35, 3, 0);
-klwolf = new Monster("Kleiner Wolf",    30, 05, 50, 20, 1, 0);
-wolf = new Monster("Wolf",              30, 10, 60, 20, 2, 0);
-grwolf = new Monster("Großer Wolf",     40, 10, 60, 30, 2, 0);
-klboar = new Monster("Kleines Schwein", 60, 10, 20, 20, 1, 0);
-boar = new Monster("Wildschwein",       60, 14, 20, 20, 1, 0);
-grboar = new Monster("Großer Schwein",  80, 14, 30, 20, 2, 0);
-testi = new Monster("Bot",             500, 00, 00, 00, 0, 0);
+}//                                         HP  De  SP  At Ex Drop
+klbear = new Monster("Kleiner Bär",         40, 10, 30, 20, 01, 0);
+bear = new Monster("Bär",                   50, 12, 30, 30, 02, 0);
+grbear = new Monster("Großer Bär",          50, 15, 30, 35, 03, 0);
+klwolf = new Monster("Kleiner Wolf",        30, 05, 50, 20, 01, 0);
+wolf = new Monster("Wolf",                  30, 10, 60, 20, 02, 0);
+grwolf = new Monster("Großer Wolf",         40, 10, 60, 30, 02, 0);
+klboar = new Monster("Kleines Wildschwein", 60, 10, 20, 20, 01, 0);
+boar = new Monster("Wildschwein",           60, 14, 20, 20, 01, 0);
+grboar = new Monster("Großes Wildschwein",  80, 14, 30, 20, 02, 0);
+testi = new Monster("Bot",                  500, 0, 00, 00, 00, 0);
 monsterdecks.push(klbear, bear, grbear, klwolf, wolf, grwolf, klboar, boar, grboar,testi);
 
 function monsterspawn(){
@@ -697,7 +704,6 @@ function Monsterfight(){
 
     var playerlife = true;
     var moblife = true;
-    var fightend = false;
 
     // Hier wird der Dmg kalkuliert
     var mobdmg = mobatk - (maindef + Number(slot1[1]) + Number(slot2[1]) + Number(slot3[1]));
@@ -709,19 +715,29 @@ function Monsterfight(){
         dmg = 1;
     }
 
-    while(!fightend){
+    if(!fightstart){
+        fightstart = true;
+    var fighttime = setInterval((function(hpthis){
+    return function(){
     if(playerlife && moblife && mainhp > 0 && mobhp > 0){
-        if(playerspdmax >= 1000){
-            mobhp -= dmg; //Das Monster nimmt Dmg
-            playerspdmax -= 1000;
+        if(playerspdmax >= globalmaxspd){
+            playerspdmax -= globalmaxspd;
+            var crithit = Math.floor((Math.random()*100))+1;
+            if(crithit <= critrate){
+                mobhp -= Math.floor(dmg*critdmg); // Das Monster nimmt kritischen Schaden
+                hpthis.childNodes[1].innerHTML = mobhp;
+            }else{
+                mobhp -= dmg; //Das Monster nimmt Schaden
+                hpthis.childNodes[1].innerHTML = mobhp;
+            }
             if(mobhp <= 0){
                 moblife = false;
                 mainexp += mobexp;
                 console.log("Das Monster ist tot");
             }
-        } else if(mobspdmax >= 1000){
-            mainhp -= mobdmg; //Der Spieler nimmt Dmg
-            mobspdmax -= 1000;
+        } else if(mobspdmax >= globalmaxspd){
+            mobspdmax -= globalmaxspd;
+            mainhp -= mobdmg;
             if(mainhp <= 0){
                 playerlife = false;
                 console.log("Der Spieler ist tot");
@@ -731,12 +747,15 @@ function Monsterfight(){
             mobspdmax += mobspd;
         }
     }else{
-        this.childNodes[1].innerHTML = mobhp;
+        clearInterval(fighttime);
         fightend = true;
+        fightstart = false;
+        hpthis.childNodes[1].innerHTML = mobhp;
         console.log("Game Over");
     }
 }
-
+    })(this),100);
+}
 }
 
 /*###########################################################
@@ -746,18 +765,27 @@ function Monsterfight(){
 #############################################################*/
 function expplus(){
     mainexp += 20000000;
-    console.log(item1);
-    console.log(item2);
-    console.log(item3);
-
-    console.table(alldecks);
-    console.table(itemlist);
-    console.log(monsterdecks);
+    
+    for (i = 1; i <= 5; ++i) {
+        setDelay(i);
+        }
+        
+        function setDelay(i) {
+        setTimeout(function(){
+        console.log(i);
+        }, 1000 * i);
+        }
 }
 
+/*###########################################################
+#############################################################
+            Die Storyline
+#############################################################
+#############################################################*/
 firsttext = false;
 tablekey = false;
 firstpart = false;
+secondpart = false;
 
 function storyline(){
     maintext = document.getElementById("maintext");
@@ -765,6 +793,7 @@ function storyline(){
     buttonhandler2.style.display = "inline-block";
     buttonhandler3.style.display = "inline-block";
 
+    // First Story Part
     if(gamestartet && firstpart === false){
         if(!firsttext){
         maintext.innerHTML = "... du bist grade wach geworden und realisierst dass du dich in einem unbekannten Raum befindest, was möchtest du tun?";
@@ -780,13 +809,9 @@ function storyline(){
             maintext.innerHTML = "Es kommen merkwürdige Geräusche von draußen";
             buttonhandler1.innerHTML = "Durch die halboffene Tür nach draußen laufen";
             buttonhandler1.onclick = function(){ // Du gehst aus dem Haus
-                firstpart = true;
-                maintext.innerHTML = "Das Haus bricht hinter dir zusammen. Es gibt kein zurück mehr!"
-                buttonhandler1.onclick = "";
-                buttonhandler2.onclick = "";
-                buttonhandler3.onclick = "";
-                monsterspawn();
-            };
+                firstpart = true; // Erster Part abgeschlossen
+                storyline();
+            }
             buttonhandler2.innerHTML = "Wieder durch die Tür laufen aus der du gekommen bist";
             buttonhandler2.onclick = function(){ // Du gehst wieder zurück in den Raum
                 storyline();
@@ -855,6 +880,13 @@ function storyline(){
                 storyline();
             }
         }
+        // Der zweite Storypart startet
+    }else if(gamestartet && secondpart === false && firstpart === true){
+        maintext.innerHTML = "Das Haus bricht hinter dir zusammen. Es gibt kein zurück mehr!"
+        buttonhandler1.onclick = "";
+        buttonhandler2.onclick = "";
+        buttonhandler3.onclick = "";
+        monsterspawn();
     }
 
 }
